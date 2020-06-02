@@ -1,6 +1,6 @@
 {
   "name": "mui-cron-generator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Material based react component to generate cron expression, forked from Sojin antony's ract-cron-generator repo",
   "keywords": [
     "React cron generator",
