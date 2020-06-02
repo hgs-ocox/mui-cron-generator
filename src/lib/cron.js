@@ -30,10 +30,10 @@ const findTab = (value) => {
   return index
 }
 
-const Cron = forwardRef(({options, locale, onChange, translateFn, value:initValue=defaultValue, showResultText, showResultCron, classes, ...props}, ref) => {
+const Cron = forwardRef(({options, locale, onChange, translateFn, value:initValue, showResultText, showResultCron, classes, ...props}, ref) => {
 
   const [headers] = useState(loadHeaders(options))
-  const [value, setValue] = useState(initValue)
+  const [value, setValue] = useState(initValue? initValue : defaultValue)
   const [tabValue, setTabValue] = useState(findTab(value))
   const [tabWidth, setTabWidth] = useState(100)
 
