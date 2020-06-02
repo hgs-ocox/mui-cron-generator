@@ -7,7 +7,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import LabelBox from './labelBox'
 import { metadata, loadHeaders } from './meta';
-import './cron-builder.css';
 import styles from './cron-builder.styl'
 
 const defaultValue = ['0','0','00','1/1','*','?','*']
