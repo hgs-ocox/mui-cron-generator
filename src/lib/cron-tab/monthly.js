@@ -73,11 +73,13 @@ const MonthlyCron = ({classes, value, onChange, translate:translateFn}) => {
       {translateFn('day(s) before the end of the month')}
     </LabelBox>
     <br/>
-    <Typography variant="body1" gutterBottom>
-      {translateFn('Start time')}
-      <Hour onChange={onAtHourChange} value={value[2]} />
-      <Minutes onChange={onAtMinuteChange} value={value[1]} />
-    </Typography>
+    <div style={{display:"flex"}}>
+      <Typography variant="body1" gutterBottom>
+        {translateFn('Start time')}
+        <Hour onChange={onAtHourChange} value={value[2]} />
+        <Minutes onChange={onAtMinuteChange} value={value[1]} />
+      </Typography>
+    </div>
   </Fragment>
   )
 
