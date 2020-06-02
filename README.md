@@ -1,6 +1,6 @@
-# react-cron-generator
+# mui-cron-generator
 
-Simple react component to generate cron expression
+Material-UI based react component to generate cron expression.  This is forked from the [react-cron-generator](https://github.com/sojinantony01/react-cron-generator) project.
 
 ## Getting Started
 
@@ -11,7 +11,7 @@ Make sure you have include bootstrap in your project
 data = '* * * * * * *'
 ```
 ```
-npm install react-cron-generator
+npm install mui-cron-generator
 
 ```
 ## demo
