@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Cron from './lib';
 
-
 class App extends Component {
 
   constructor(props) {
@@ -16,7 +15,6 @@ class App extends Component {
       <Cron
         style={{width:'50vw'}}
         onChange={(e)=> {this.setState({value:e}); console.log(e)}}
-        value={this.state.value}
         />
     </div>)
   }
