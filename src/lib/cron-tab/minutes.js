@@ -1,23 +1,36 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import LabelBox from '../labelBox'
 
-export default class MinutesCron extends Component {
+import styles from '../cron-builder.styl'
 
-    onChange(e) {
+
+const MinutesCron = ({classes, onChange:handleChange, value, translate:translateFn}) => {
+
+    const onChange = (e) => {
         if((e.target.value > 0 && e.target.value < 60) || e.target.value === '') {
             let val = ['0','*','*','*','*','?','*']
-            val[1] = e.target.value ? `0/${e.target.value}` : val[1];  
-            this.props.onChange(val)
-        } 
+            val[1] = e.target.value ? `0/${e.target.value}` : val[1];
+            handleChange(val)
+        }
     }
 
-    render() {
-        const translateFn = this.props.translate;
-        let value = this.props.value;
-        if(value && value.length > 1) {
-            value = value[1].split('/')[1];
-        }
-        return (<div className="well">   
-               {translateFn('Every')} <input type="Number" onChange={this.onChange.bind(this)} value={value} min={1} max={60} /> {translateFn('minute(s)')}
-        </div>)
+    if (value && value.length > 1) {
+      value = value[1].split('/')[1];
     }
+
+    return (
+      <LabelBox variant="content">
+        {translateFn('Every')} <input type="Number" onChange={onChange} value={value} min={1} max={60} /> {translateFn('minute(s)')}
+      </LabelBox>
+    )
+
 }
+
+MinutesCron.defaultProps = {
+  onChange: (value) => {console.log(value)}
+}
+
+MinutesCron.muiName = 'MinutesCron'
+
+export default withStyles(styles)(MinutesCron)

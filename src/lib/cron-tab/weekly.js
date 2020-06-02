@@ -1,89 +1,116 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import Minutes from '../minutes-select';
 import Hour from '../hour-select';
+import styles from '../cron-builder.styl'
+import LabelBox from '../labelBox'
 
-export default class WeeklyCron extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        };
-        this.onAtHourChange = this.onAtHourChange.bind(this);
-        this.onAtMinuteChange = this.onAtMinuteChange.bind(this);
-        this.onCheck = this.onCheck.bind(this);
-    }
-    
-    onAtHourChange(e) {
-        let val = this.state.value;
-        val[0] = '0';
-        val[2] = `${e.target.value}`;
-        this.props.onChange(val);
-    }
-
-    onAtMinuteChange(e) {
-        let val = this.state.value;
-        val[0] = '0';
-        val[1] = `${e.target.value}`;
-        this.props.onChange(val);
-    }
-
-    onCheck(e) {
-        let val = this.state.value;
-        val[0] = '0';
-        if(e.target.checked) {
-            this.onDayChecked(val, e);
-        } else {
-            this.onDayUnChecked(val, e);           
-        }
-        this.props.onChange(val)
-    }
-
-    onDayChecked(val, e) {
-        val[2] = (`${val[2]}`.split('/').length > 1) ? '0' : val[2].toString();
-        val[3] = '?';
-        val[4] = '*';
-        if (val[5] === '*' || val[5] === '?' || val[5] === 'MON-FRI') {
-            val[5] = e.target.value;
-        } else {
-            val[5] = val[5] + '!' + e.target.value;
-        }
-    }
-
-    onDayUnChecked(val, e) {
-        val[5] = val[5].split('!');
-        if (val[5].length > 1) {
-            val[5].splice(val[5].indexOf(e.target.value), 1);
-            val[5] = val[5].toString().replace(/,/g, '!');
-        }
-        else {
-            val[5] = '*';
-        }
-    }
-
-    render() {
-        const translateFn = this.props.translate;
-        this.state.value = this.props.value;
-        return (<div className="container-fluid">
-            <div className="well well-small row">
-                <div className="span6 col-sm-6">
-                    <div className="text_align_left">
-                        <input type="checkbox" value="MON" onChange={this.onCheck} checked={(this.state.value[5].search('MON') !== -1 ) ? true : false} />{translateFn('Monday')}<br/>
-                        <input type="checkbox" value="WED" onChange={this.onCheck} checked={this.state.value[5].search('WED') !== -1 ? true : false}  />{translateFn('Wednesday')}<br/>
-                        <input type="checkbox" value="FRI" onChange={this.onCheck} checked={(this.state.value[5].search('FRI') !== -1 ) ? true : false}/>{translateFn('Friday')}<br/>
-                        <input type="checkbox" value="SUN" onChange={this.onCheck} checked={this.state.value[5].search('SUN') !== -1 ? true : false}/>{translateFn('Sunday')}
-                    </div>
-                </div>
-                <div className="span6 col-sm-6">
-                    <div className="text_align_left">
-                        <input type="checkbox" value="TUE" onChange={this.onCheck} checked={this.state.value[5].search('TUE') !== -1 ? true : false}/>{translateFn('Tuesday')}<br />
-                        <input type="checkbox" value="THU" onChange={this.onCheck} checked={this.state.value[5].search('THU') !== -1 ? true : false}/>{translateFn('Thursday')}<br />
-                        <input type="checkbox" value="SAT" onChange={this.onCheck} checked={this.state.value[5].search('SAT') !== -1 ? true : false}/>{translateFn('Saturday')}
-                    </div><br /><br />
-                </div>
-            </div>
-            {translateFn('Start time')}
-            <Hour onChange={this.onAtHourChange} value={this.state.value[2]} />
-            <Minutes onChange={this.onAtMinuteChange} value={this.state.value[1]} />
-        </div>)
-    }
+const DoW = {
+  MON: "Monday",
+  TUE: "Tuesday",
+  WED: "Wednesday",
+  THU: "Thursday",
+  FRI: "Friday",
+  SAT: "Saturday",
+  SUN: "Sunday"
 }
 
+
+const WeeklyCron = ({classes, value, onChange, translate:translateFn}) => {
+
+  const onAtHourChange = (e) => {
+      let val = value;
+      val[0] = '0';
+      val[2] = `${e.target.value}`;
+      onChange(JSON.parse(JSON.stringify(val)))
+  }
+
+  const onAtMinuteChange = (e) => {
+      let val = value;
+      val[0] = '0';
+      val[1] = `${e.target.value}`;
+      onChange(JSON.parse(JSON.stringify(val)))
+  }
+
+  const onCheck = (e) => {
+      let val = value;
+      val[0] = '0';
+      if(e.target.checked) {
+          onDayChecked(val, e);
+      } else {
+          onDayUnChecked(val, e);
+      }
+      onChange(JSON.parse(JSON.stringify(val)))
+  }
+
+  const onDayChecked = (val, e) => {
+      val[2] = (`${val[2]}`.split('/').length > 1) ? '0' : val[2].toString();
+      val[3] = '?';
+      val[4] = '*';
+      if (val[5] === '*' || val[5] === '?' || val[5] === 'MON-FRI') {
+          val[5] = e.target.value;
+      } else {
+          val[5] = val[5] + '!' + e.target.value;
+      }
+  }
+
+  const onDayUnChecked = (val, e) => {
+      val[5] = val[5].split('!');
+      if (val[5].length > 1) {
+          val[5].splice(val[5].indexOf(e.target.value), 1);
+          val[5] = val[5].toString().replace(/,/g, '!');
+      }
+      else {
+          val[5] = '*';
+      }
+  }
+
+  let Checkboxes = Object.keys(DoW).reduce((result, key, i) => {
+
+    result[i % result.length].push(
+      <FormControlLabel
+        control={<Checkbox value={key} checked={value[5].search(key) !== -1} onChange={onCheck} name={DoW[key]} />}
+        label={translateFn(DoW[key])}
+      />
+    )
+
+    return result
+  }, [[],[],[]])
+
+  return (
+    <Fragment>
+      <LabelBox variant="content">
+        {translateFn('Start time')}
+        <Hour onChange={onAtHourChange} value={value[2]} />
+        <Minutes onChange={onAtMinuteChange} value={value[1]} />
+      </LabelBox>
+      <LabelBox variant="content">
+      {
+        Checkboxes.map(box => {
+          return (
+            <FormControl>
+              <FormGroup>
+               {box}
+              </FormGroup>
+          </FormControl>
+          )
+        })
+      }
+      </LabelBox>
+    </Fragment>
+  )
+
+
+}
+
+WeeklyCron.defaultProps = {
+  onChange: (value) => {console.log(value)}
+}
+
+WeeklyCron.muiName = 'WeeklyCron'
+
+export default withStyles(styles)(WeeklyCron)

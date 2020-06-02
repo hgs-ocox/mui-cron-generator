@@ -16,6 +16,7 @@
   ],
   "author": "Sojin antony",
   "dependencies": {
+    "@material-ui/core": "^4.10.0",
     "cronstrue": "1.92.0"
   },
   "main": "dist/index.js",

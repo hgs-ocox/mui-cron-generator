@@ -54,7 +54,7 @@ const validateHeaders = (headers) => {
 
 /**
  * Validate and load headers
- * @param {*} options 
+ * @param {*} options
  */
 export const loadHeaders = (options) => {
     if(options) {
